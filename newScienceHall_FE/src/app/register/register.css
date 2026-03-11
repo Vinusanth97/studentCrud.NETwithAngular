@@ -1,0 +1,14 @@
+.row{
+    margin-top: 50px;
+}
+h1{
+    text-align:center;
+}
+.buttonDiv{
+    text-align:center;
+}
+button{
+    display: inline-block;
+    margin: 0 auto;
+    margin:5px;
+}

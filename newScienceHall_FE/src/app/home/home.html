@@ -1,0 +1,64 @@
+<!-- For view all students -->
+ <div class="row">
+    <div class="col-md-2"></div>
+  <div class="col-md-8">
+  
+  <a routerLink=""><button class="btn btn-primary m-3">Register New Student</button></a>
+ 
+    <div class="col-md-4">
+    <input
+      type="text"
+      class="form-control m-3"
+      placeholder="Search by First Name or Last Name"
+      [(ngModel)]="searchText"
+      (input)="searchStudent()"
+     
+    />
+    </div>
+    <div class="card m-3 text-center" style="border:none;">
+      <h1 class="card-header text-danger">All Students</h1>
+      <div class="card-body mt-3">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>Date of Birth</th>
+              <th>Address</th>
+              <th>Parent Name</th>
+              <th>Parent Contact</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- <tr *ngFor="let student of students"> -->
+              @if(filteredStudents$ |async ; as students){
+                @for(student of students; track $index){
+                  <tr>
+              <td>{{student.firstName}}</td>
+              <td>{{student.lastName}}</td>
+              <td>{{student.email}}</td>
+              <td>{{student.dateOfBirth | date:'dd/MM/yyyy'}}</td>
+              <td>{{student.address}}</td>
+              <td>{{student.parentName}}</td>
+              <td>{{student.parentContact}}</td> 
+              <td class="d-flex justify-content-center">
+                <button class="btn btn-sm btn-primary m-1" [routerLink]="['/register',student.id]"[queryParams]="{mode:'view'}"><i class="bi bi-eye-fill"></i></button>
+                <button class="btn btn-sm btn-warning m-1"[routerLink]="['/register',student.id]"[queryParams]="{mode:'edit'}"><i class="bi bi-pencil-fill"></i></button>
+                <button class="btn btn-sm btn-danger m-1" [routerLink]="['/students',student.id]"[queryParams]="{mode:'delete'}" (click)="deleteMethod(student.id.toString())"><i class="bi bi-trash-fill"></i></button>
+              </td>
+            </tr>
+                }
+              }
+              
+          </tbody>
+        </table>
+
+      </div>
+      </div>
+    </div>
+        <div class="col-md-2"></div>
+
+</div>
+<router-outlet></router-outlet>

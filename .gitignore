@@ -1,0 +1,27 @@
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Node
+node_modules/
+
+# Angular
+dist/
+.angular/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# .NET
+bin/
+obj/
+
+# Visual Studio
+.vs/
+
+# Logs
+*.log

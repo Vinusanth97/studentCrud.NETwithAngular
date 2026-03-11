@@ -1,0 +1,110 @@
+
+<div class="row">
+
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+    <div *ngIf="message"
+       class="alert"
+       [ngClass]="{
+         'alert-success': message.type === 'success',
+         'alert-danger': message.type === 'error',
+         'alert-info': message.type === 'info'
+       }">
+    {{ message.text }}
+  </div>     
+    <a routerLink="/students"><button class="btn btn-primary m-3">View All Students</button></a>
+    <div class="card bg-light m-3">
+    <h1 class="card-header text-danger">{{mode==='view'?'View Student':(mode==='edit'?'Edit Student':'Student Register')}}</h1>
+    <div class="card-body">
+    <form class="form" #formData="ngForm" (ngSubmit)="formData.form.valid && onSubmit(formData)" novalidate>
+      @if(mode==='edit'){
+      <input type="hidden" name="id" id= "id" ngModel #id="ngModel" [ngModel]="(student$|async)?.id">
+      }
+      <div class="form-group">
+          <label for="firstName" class="form-label">First Name:</label>
+          <input type="text" id="firstName" name="firstName" ngModel #firstName="ngModel" class="form-control" [ngClass]="{'is-invalid':formData.submitted && firstName.invalid,'is-valid':formData.submitted && firstName.valid }" [ngModel]="(student$ | async)?.firstName" placeholder="First Name" [readonly]="mode==='view'" required>
+          <div class="invalid-feedback">
+            First Name is required. 
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label for="lastName" class="form-label">Last Name:</label>
+          <input type="text" id="lastName" name="lastName" ngModel #lastName="ngModel" class="form-control" [ngClass]="{'is-invalid':formData.submitted && lastName.invalid,'is-valid':formData.submitted && lastName.valid }" [ngModel]="(student$|async)?.lastName" placeholder="Last Name" [readonly]="mode==='view'" required>
+          <div class="invalid-feedback">
+            Last Name is required.
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label for="email" class="form-label">Email:</label>
+          <input type="email" id="email" name="email" ngModel email #email="ngModel" class="form-control" [ngClass]="{'is-invalid':formData.submitted && email.invalid,'is-valid':formData.submitted && email.valid }" [ngModel]="(student$ | async)?.email" placeholder="Email" [readonly]="mode==='view'" required>
+          <div class="invalid-feedback">
+            <div *ngIf="email.errors?.['required']"> Email is required.</div>
+            <div *ngIf="email.errors?.['email']">Email is not valid.</div>
+           
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label for="dateOfBirth" class="form-label">Date of Birth:</label>
+          <input type="text" id="dateOfBirth" name="dateOfBirth"  #dateOfBirth="ngModel" ngModel  pattern="^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$"
+           class="form-control" [ngClass]="{'is-invalid':formData.submitted && dateOfBirth.invalid,'is-valid':formData.submitted && dateOfBirth.valid }" [ngModel]="(student$ | async)?.dateOfBirth|date:'dd/MM/yyyy'" placeholder="dd/mm/yyyy" [readonly]="mode==='view'" required>
+          <div  class="invalid-feedback">
+            <div *ngIf="dateOfBirth.errors?.['required']">
+            Date of Birth is required.
+          </div>
+
+          <div *ngIf="dateOfBirth.errors?.['pattern']">
+            Enter date in dd/mm/yyyy format.
+          </div>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label for="address" class="form-label">Address:</label>
+          <input type="text" id="address" name="address" ngModel #address="ngModel" class="form-control" [ngClass]="{'is-invalid':formData.submitted && address.invalid,'is-valid':formData.submitted && address.valid }" [ngModel]="(student$|async)?.address" placeholder="Address" [readonly]="mode==='view'" required>
+          <div class="invalid-feedback">
+            Address is required.
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label for="parentName" class="form-label">Parent Name:</label>
+          <input type="text" id="parentName" name="parentName" ngModel #parentName="ngModel" class="form-control" [ngClass]="{'is-invalid':formData.submitted && parentName.invalid,'is-valid':formData.submitted && parentName.valid }" [ngModel]="(student$|async)?.parentName" placeholder="Parent Name" [readonly]="mode==='view'" required>
+          <div class="invalid-feedback">
+            Parent Name is required.
+          </div>
+      </div>
+      
+      <div class="form-group">
+          <label for="parentContact" class="form-label">Parent Contact:</label>
+          <input type="text" id="parentContact" name="parentContact" ngModel #parentContact="ngModel" class="form-control" minlength="10" maxlength="12" [ngClass]="{'is-invalid':formData.submitted && parentContact.invalid,'is-valid':formData.submitted && parentContact.valid }" [ngModel]="(student$|async)?.parentContact" placeholder="Parent Contact" [readonly]="mode==='view'" required>
+          <div class="invalid-feedback">
+            <div *ngIf="parentContact.errors?.['required']">Parent Contact is required.</div>
+            <div *ngIf="parentContact.errors?.['minlength']">Parent Contact must be at least 10 characters.</div>
+            <div *ngIf="parentContact.errors?.['maxlength']">Parent Contact must be at most 12 characters.</div>
+          </div>
+      </div>
+      <div class="buttonDiv">
+        @if(mode==='edit'){
+        <button type="submit" class="btn btn-warning mt-3" (click)="action='update'">Update</button>
+        }
+        @else{
+          <button type="submit" class="btn btn-primary mt-3" (click)="action='submit'" [disabled]="mode==='view'">Submit</button>
+        }
+        @if(mode==='register'){
+             <button type="reset" class="btn btn-secondary mt-3" (click)="formData.resetForm()">Reset</button>
+        }
+        @else{
+        <button type="reset" class="btn btn-secondary mt-3" [routerLink]="['/students']">Back</button>
+        }
+      </div>
+     </form>
+    </div>
+    </div>
+  </div>
+  
+  <div class="col-md-3"></div>
+</div>
+<router-outlet></router-outlet>
